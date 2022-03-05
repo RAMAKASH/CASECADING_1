@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+   <div class="row">
+       <div class="col-4 offset-4">
+           <div class="form-group">
+               <label>Select Country</label>
+               <select class="form-control country">
+                   <option>Select</option>
+               </select>
+
+           </div>
+           <div class="form-group">
+               <label>Select State </label>
+               <select class="form-control State">
+                   <option>Select</option>
+               </select>
+
+           </div>
+           <div class="form-group">
+               <label>Select city</label>
+               <select class="form-control city">
+                   <option>Select</option>
+               </select>
+
+           </div>
+       </div>
+   </div>
+</div>
+<script>
+    $(document).ready(function () {
+        loadCountries()
+        $(".country").change(function () {
+            val Id = $(this).val();
+            $(".state").empty();
+            $(".state").append("<option>select</option>")
+            $.get('@Url.Action("GetStates","Home")', {"Id":Id} function
+            (result) {
+            //console.log(result)
+            $.each(result, function (i, data)){
+                $(".state").append("<option value=" + data.Id + ">" + data.name +
+                    "</option>")
+                )}
+             })
+        })
+            $(".state").change(function () {
+            val Id = $(this).val();
+            $(".city").empty();
+            $(".city").append("<option>select</option>")
+            $.get('@Url.Action("Getcities","Home")', {"Id":Id} function
+            (result) {
+            //console.log(result)
+            $.each(result, function (i, data)){
+                $(".City").append("<option value=" + data.Id + ">" + data.name +
+                    "</option>")
+                )}
+             })
+        })
+    })
+    function loadCountries() {
+        $.get('@Url.Action("GetCountries","Home")', function
+            (result) {
+            //console.log(result)
+            $.each(result, function (i, data)){
+                $(".country").append("<option value=" + data.id + ">" + data.name +
+                    "</option>")
+            )}
+        })
+    }
+</script>
